@@ -28,7 +28,7 @@
     
     width: 80%;
     height: 80%;
-    background-color: aquamarine;
+    background-color: #E5E7E9;
     font-size: 30px;
 
     cursor: pointer;
@@ -36,6 +36,16 @@
 
 .selected {
     color: brown;
+}
+
+.correct {
+    background-color: #33FF57;
+    cursor: default;
+    pointer-events: none;
+}
+
+.in-line {
+    background-color: #F9E79F;
 }
 
 .alertbar {
@@ -55,4 +65,8 @@
     font-size: 30px;
     border: 1px solid gray;
     border-radius: 20%;
+}
+
+.out {
+    display: none;
 }

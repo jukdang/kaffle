@@ -1,7 +1,7 @@
 .mainGame {
-    background-color: antiquewhite;
+    background-color: #fff;
     width: 100%;
-    height: 600px;
+    height: 800px;
     position: relative;
 }
 
@@ -29,7 +29,13 @@
     width: 80%;
     height: 80%;
     background-color: #E5E7E9;
-    font-size: 30px;
+
+    font-family: sans-serif;
+    font-weight: 600;
+    font-size: 40px;
+
+    border-bottom: 5px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12% ;
 
     cursor: pointer;
 }
@@ -39,13 +45,20 @@
 }
 
 .correct {
-    background-color: #33FF57;
+    background-color: #6fb05c;
+    color: #fff;
     cursor: default;
     pointer-events: none;
 }
 
 .in-line {
-    background-color: #F9E79F;
+    background-color: #e9ba3a;
+    color: #fff;
+}
+
+.leftmove {
+    font-size: 30px;
+    padding-bottom: 70px;
 }
 
 .alertbar {
@@ -60,13 +73,59 @@
     justify-content: center;
     align-items : center;
 
-    background-color: azure;
+    background-color: rgb(240, 240, 240);
     font-weight: 700;
     font-size: 30px;
     border: 1px solid gray;
-    border-radius: 20%;
+    /* border-radius: 20%; */
+}
+
+.next-btn {
+    position: absolute;
+
+    width: 30%;
+
+    background-color: #FFF;
+
+    border: 1px solid gray;
+    
+
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    cursor: pointer;
+
 }
 
 .out {
     display: none;
+}
+
+
+.explanation-table {
+    margin: auto;
+
+
+    border: 1px solid black;
+
+    border-collapse: collapse;
+}
+
+.explanation-table tr {
+
+}
+
+.explanation-table th {
+    width: 10%;
+
+    border: 1px solid black;
+
+}
+
+.explanation-table td {
+    text-align: left;
+    padding-left: 10px;
+
+    border: 1px solid black;
 }

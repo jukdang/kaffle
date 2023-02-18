@@ -14,3 +14,6 @@ to do
  - change game per 24 hours
  - change to korean
  
+
+next to do
+ - game end showing

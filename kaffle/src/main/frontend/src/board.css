@@ -1,3 +1,6 @@
+.main {
+    width: 100%;
+}
 .mainGame {
     background-color: #fff;
     width: 100%;
@@ -15,8 +18,9 @@
                 "11 12 13 14 15" "16 17 18 19 20" "21 22 23 24 25";
     margin: auto;
     place-items: center;
-    width: 80%;
-    height: 80%;
+    width: 450px;
+    height: 450px;
+    padding: 10px;
     border: 1px black solid;
     opacity: 50%;
 }
@@ -26,8 +30,8 @@
     justify-content: center;
     align-items : center;
     
-    width: 80%;
-    height: 80%;
+    width: 90%;
+    height: 90%;
     background-color: #E5E7E9;
 
     font-family: sans-serif;
@@ -102,12 +106,16 @@
     display: none;
 }
 
+.explanation {
+    position: relative;
+    justify-content: center;
+}
 
 .explanation-table {
     margin: auto;
+    width: 90%;
 
-
-    border: 1px solid black;
+    /* border: 1px solid black; */
 
     border-collapse: collapse;
 }
@@ -117,7 +125,7 @@
 }
 
 .explanation-table th {
-    width: 10%;
+    width: 60px;
 
     border: 1px solid black;
 

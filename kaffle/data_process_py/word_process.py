@@ -57,9 +57,14 @@ import sqlite3
 
 #---------------------------------------------------------
 
-# df6 = pd.read_csv('./kor_dict/all_kor05.csv')
+df6 = pd.read_csv('./kor_dict/all_kor05.csv')
 
-# con = sqlite3.connect('kor_dict.db')
+df6['ja1'] = df6['어휘_자모'].str[0]
+df6['mo1'] = df6['어휘_자모'].str[1]
+df6['ja2'] = df6['어휘_자모'].str[2]
+df6['mo2'] = df6['어휘_자모'].str[3]
+df6['ja3'] = df6['어휘_자모'].str[4]
 
-# df6.to_sql('words', con, if_exists='replace', index_label='id')
-
+con = sqlite3.connect('kor_dict.db')
+df6.to_sql('words', con, if_exists='replace', index_label='id')
+ 

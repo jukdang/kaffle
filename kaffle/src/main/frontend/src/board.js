@@ -1,15 +1,9 @@
 import './board.css'
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import $ from 'jquery';
 
 function Board() {
-    
-    //const [hello, setHello] = useState('');
-    // useEffect(() => {
-    //     axios.get('/api/hello')
-    //     .then(response => setHello(response.data))
-    //     .catch(error => console.log(error))
-    // }, []);
 
     const answerList = [
         ['ㄱ', 'ㅖ', 'ㅅ', 'ㅏ', 'ㄴ'],
@@ -19,13 +13,13 @@ function Board() {
         ['ㄱ', 'ㅛ', 'ㅇ', 'ㅑ', 'ㅇ']
     ]
     // const wordList = ['ㄱ', 'ㅐ', 'ㅇ', 'ㅛ', 'ㅇ', 'ㄴ', 'ㅅ', 'ㅏ', 'ㅖ', 'ㅏ', 'ㅣ', 'ㅇ', 'ㅏ', 'ㅇ', 'ㅑ', 'ㄱ', 'ㅛ', 'ㅇ', 'ㅑ', 'ㅓ', 'ㅛ'];
-    const wordList = [
-        'ㄱ', 'ㅖ', 'ㅅ', 'ㅏ', 'ㄴ',
-        'ㅣ', 'ㅏ', 'ㅐ',
-        'ㅇ', 'ㅏ', 'ㅇ', 'ㅑ', 'ㅇ',
-        'ㅓ', 'ㅛ', 'ㅛ',
-        'ㄱ', 'ㅇ', 'ㅛ', 'ㅇ', 'ㅑ'
-    ];
+    // let wordList = [
+    //     'ㄱ', 'ㅖ', 'ㅅ', 'ㅏ', 'ㄴ',
+    //     'ㅣ', 'ㅏ', 'ㅐ',
+    //     'ㅇ', 'ㅏ', 'ㅇ', 'ㅑ', 'ㅇ',
+    //     'ㅓ', 'ㅛ', 'ㅛ',
+    //     'ㄱ', 'ㅇ', 'ㅛ', 'ㅇ', 'ㅑ'
+    // ];
     const rowList = [
         ['ㄱ', 'ㅖ', 'ㅅ', 'ㅏ', 'ㄴ'],
         ['-', '-', '-', '-', '-'],
@@ -41,6 +35,7 @@ function Board() {
         ['ㄴ', 'ㅐ', 'ㅇ', 'ㅛ', 'ㅇ']
     ];
 
+    const [wordList, setWordList] = useState([]);
     const [boardSize, setBoardSize] = useState(5); 
     const [isSelected, setIsSelected] = useState(false);
     const [selected, setSelected] = useState(null);
@@ -52,6 +47,30 @@ function Board() {
         setBoardSize(5);
         setCorrectCnt(0);
         setTryCnt(4);
+
+        (async () => {
+            await axios.get('/testJamo')
+            .then(response => {
+                const res = response.data;
+                console.log('response: ', res)
+                setWordList((res.row1 +
+                    res.col1[1] + res.col2[1] + res.col3[1] +
+                    res.row2 +
+                    res.col1[3] + res.col2[3] + res.col3[3] +
+                    res.row3).split(''));
+            })
+            .catch(error => {
+                console.log(error)
+                setWordList([
+                    'ㄱ', 'ㅖ', 'ㅅ', 'ㅏ', 'ㄴ',
+                    'ㅣ', 'ㅏ', 'ㅐ',
+                    'ㅇ', 'ㅏ', 'ㅇ', 'ㅑ', 'ㅇ',
+                    'ㅓ', 'ㅛ', 'ㅛ',
+                    'ㄱ', 'ㅇ', 'ㅛ', 'ㅇ', 'ㅑ'
+                ]);
+            })
+        })();
+
 
         let cnt=1;
         for(let i=0;i<boardSize;i++){
@@ -89,6 +108,7 @@ function Board() {
 
         startBtn.classList.add('out'); 
         alertbar.textContent = 'Start!'
+        
         
         setTimeout(() => {
             let elementList = document.getElementsByClassName('tile');
@@ -135,7 +155,6 @@ function Board() {
         let alertbar = document.getElementsByClassName('alertbar')[0];
         
         let closeBtn = document.getElementsByClassName('end-btn')[0];
-        let explanationTable = document.getElementsByClassName('explanation')[0];
         
 
         board.style.opacity = '90%';
@@ -149,17 +168,19 @@ function Board() {
         }
         alertbar.classList.remove('out');
         closeBtn.classList.remove('out');
-        explanationTable.classList.remove('out');
+        
     }
 
     function showGameResult(){
         let board = document.getElementsByClassName('board')[0];
         let alertbar = document.getElementsByClassName('alertbar')[0];
         let closeBtn = document.getElementsByClassName('end-btn')[0];
+        let explanationTable = document.getElementsByClassName('explanation')[0];
 
         board.style.opacity = '100%';
         alertbar.classList.add('out');
         closeBtn.classList.add('out');
+        explanationTable.classList.remove('out');
 
     }
 
@@ -193,6 +214,9 @@ function Board() {
     }
 
     function board_tile(){
+
+        
+        
         let arr = [];
         let word = 0;
         for(let i=0;i<boardSize;i++){
@@ -219,7 +243,7 @@ function Board() {
 
 
     return(
-        <div>
+        <div className='main'>
             <div className='mainGame'>
                 <div className='board'>
                     {board_tile()}
@@ -236,6 +260,7 @@ function Board() {
             </div>
             <div className='leftmove'> Left move : {tryCnt}</div>
             <div className='explanation out'>
+                <p>Answer</p>
                 <table className="explanation-table">
                     <tbody>
                         <tr>

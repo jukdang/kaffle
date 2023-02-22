@@ -24,7 +24,8 @@ public class DbConnect {
         if(conn == null){
             try{
                 Class.forName("org.sqlite.JDBC");
-                conn = DriverManager.getConnection("jdbc:sqlite:" + "kor_dict.db");
+                conn = DriverManager.getConnection("jdbc:sqlite:" + "kaffle/db/kor_dict.db");
+                System.out.println("connection successed!");
             }
             catch(Exception e){
                 e.printStackTrace();

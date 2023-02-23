@@ -42,4 +42,5 @@ out/
 *.csv
 *.db
 
-**/src/main/resources/static/static/
+**/src/main/resources/static/static/css/
+**/src/main/resources/static/static/js/

@@ -46,18 +46,14 @@ function Board() {
     useEffect(() => {
         setBoardSize(5);
         setCorrectCnt(0);
-        setTryCnt(4);
+        setTryCnt(20);
 
         (async () => {
-            await axios.get('/testJamo')
+            await axios.get('/api/todayMixedJamo')
             .then(response => {
                 const res = response.data;
                 console.log('response: ', res)
-                setWordList((res.row1 +
-                    res.col1[1] + res.col2[1] + res.col3[1] +
-                    res.row2 +
-                    res.col1[3] + res.col2[3] + res.col3[3] +
-                    res.row3).split(''));
+                setWordList(res.split(''));
             })
             .catch(error => {
                 console.log(error)
@@ -128,23 +124,47 @@ function Board() {
         let data_pos = JSON.parse(tile.getAttribute("data-pos"));
         let x = data_pos.x;
         let y = data_pos.y;
+        
         // console.log(data_pos[0], data_pos[1])
         // console.log(answerList[data_pos[0]][data_pos[1]])
         // console.log(tile_value)
         // console.log(rowList[x])
         // console.log(columnList[y])
         // console.log(rowList[x].includes(tile_value), columnList[y].includes(tile_value))
+
+        let request_data = {row:x, col:y, tile:tile_value}
+        console.log(request_data);
+        (async () => {
+            await axios.post('/api/positionCheck', request_data)
+            .then(response => {
+                const res = response.data;
+                console.log('response: ', res)
+                tile.classList.remove('in-line');
+                if(res > 0){
+                    tile.classList.add('correct');
+                    setCorrectCnt(correctCnt => correctCnt+1);
+                    
+                }
+                else if(res < 0){
+                    tile.classList.add('in-line');
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                tile.classList.remove('in-line');
+                if(tile_value === answerList[x][y]){
+                    // console.log('correct');
+                    tile.classList.add('correct');
+                    setCorrectCnt(correctCnt => correctCnt+1);
+                    
+                }
+                else if(rowList[x].includes(tile_value) || columnList[y].includes(tile_value)){
+                    tile.classList.add('in-line');
+                }
+            })
+        })();
         
-        tile.classList.remove('in-line');
-        if(tile_value === answerList[x][y]){
-            // console.log('correct');
-            tile.classList.add('correct');
-            setCorrectCnt(correctCnt => correctCnt+1);
-            
-        }
-        else if(rowList[x].includes(tile_value) || columnList[y].includes(tile_value)){
-            tile.classList.add('in-line');
-        }
+        
     }
 
     function gameEnd(isClear){

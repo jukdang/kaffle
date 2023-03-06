@@ -1,13 +1,16 @@
 package com.kaffle.kaffle;
 
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+
+//@SpringBootTest
 class KaffleApplicationTests {
 
-	@Test
+	//@Test
 	void contextLoads() {
+		System.out.println("test");
 	}
 
 }

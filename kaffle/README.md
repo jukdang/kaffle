@@ -19,6 +19,6 @@ to do
  - add explaination
  - view after game end
  - modify word dictionary
- - change game per 24 hours 
 
- - git ignore resources/static/static
+
+

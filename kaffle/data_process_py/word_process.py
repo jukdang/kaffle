@@ -57,14 +57,27 @@ import sqlite3
 
 #---------------------------------------------------------
 
-df6 = pd.read_csv('./kor_dict/all_kor05.csv')
+# df6 = pd.read_csv('./kor_dict/all_kor05.csv')
 
-df6['ja1'] = df6['어휘_자모'].str[0]
-df6['mo1'] = df6['어휘_자모'].str[1]
-df6['ja2'] = df6['어휘_자모'].str[2]
-df6['mo2'] = df6['어휘_자모'].str[3]
-df6['ja3'] = df6['어휘_자모'].str[4]
+# df6['ja1'] = df6['어휘_자모'].str[0]
+# df6['mo1'] = df6['어휘_자모'].str[1]
+# df6['ja2'] = df6['어휘_자모'].str[2]
+# df6['mo2'] = df6['어휘_자모'].str[3]
+# df6['ja3'] = df6['어휘_자모'].str[4]
 
-con = sqlite3.connect('kor_dict.db')
-df6.to_sql('words', con, if_exists='replace', index_label='id')
+# con = sqlite3.connect('kor_dict.db')
+# df6.to_sql('words', con, if_exists='replace', index_label='id')
+
+#---------------------------------------------------------
  
+con = sqlite3.connect('kor_dict.db')
+cur = con.cursor()
+
+cur.execute("SELECT * FROM words")
+rows = cur.fetchall()
+
+with open('./data-h2.sql', 'w', encoding="UTF-8") as f:
+    f.write("INSERT INTO word_dictionary (id, word_dict, unit, is_native, class_type, meaning, category, word, jamo, jamo_len, ja1, mo1, ja2, mo2, ja3)\n")
+    f.write("VALUES\n")
+    for row in rows:
+        f.write(f"('{row[0]}', '{row[1]}', '{row[2]}', '{row[3]}', '{row[4]}', '{row[5]}', '{row[6]}','{row[7]}', '{row[8]}', '{row[9]}', '{row[10]}', '{row[11]}', '{row[12]}', '{row[13]}', '{row[14]}'),\n")

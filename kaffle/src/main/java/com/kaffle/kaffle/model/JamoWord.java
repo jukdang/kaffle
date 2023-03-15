@@ -1,13 +1,18 @@
 package com.kaffle.kaffle.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class JamoWord {
-    public String ja1;
-    public String mo1;
-    public String ja2;
-    public String mo2;
-    public String ja3;
+    private String ja1;
+    private String mo1;
+    private String ja2;
+    private String mo2;
+    private String ja3;
     
-    public String jamo;
+    private String jamo;
 
     public JamoWord(String jamo) {
         this.ja1 = jamo.substring(0,1);
@@ -33,16 +38,9 @@ public class JamoWord {
     public String toString() {
         return jamo;
     }
-    
-    public int isInLine(String s, int position){
-        if(jamo.substring(position,position+1).equals(s)){
-            return 1;
-        }
-        else if(jamo.contains(s)){
-            return -1;
-        }
 
-        return 0;
+    public String getMos(){
+        return mo1 + mo2;
     }
     
     

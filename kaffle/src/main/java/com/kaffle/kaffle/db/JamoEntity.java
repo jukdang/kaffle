@@ -1,10 +1,15 @@
 package com.kaffle.kaffle.db;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.kaffle.kaffle.model.GameStartingData;
 import com.kaffle.kaffle.model.JamoBoard;
+import com.kaffle.kaffle.model.Meanings;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -61,6 +66,9 @@ public class JamoEntity {
     private String mix_col3;
 
     @Transient
+    private List<List<String[]>> meanings;
+
+    @Transient
     private JamoBoard jamo_board;
     @Transient
     private JamoBoard mixed_jamoBoard;
@@ -85,14 +93,34 @@ public class JamoEntity {
 
     @Transient
     public void mixed_jamoBoard_to_entity(){
-        mix_row1 = mixed_jamoBoard.row1.toString();
-        mix_row2 = mixed_jamoBoard.row2.toString();
-        mix_row3 = mixed_jamoBoard.row3.toString();
-        mix_col1 = mixed_jamoBoard.col1.toString();
-        mix_col2 = mixed_jamoBoard.col2.toString();
-        mix_col3 = mixed_jamoBoard.col3.toString();
+        mix_row1 = mixed_jamoBoard.getRow1().toString();
+        mix_row2 = mixed_jamoBoard.getRow2().toString();
+        mix_row3 = mixed_jamoBoard.getRow3().toString();
+        mix_col1 = mixed_jamoBoard.getCol1().toString();
+        mix_col2 = mixed_jamoBoard.getCol2().toString();
+        mix_col3 = mixed_jamoBoard.getCol3().toString();
     }
 
+    public GameStartingData toResponse(){
+        String boardString = mixed_jamoBoard.toString(); 
+        String positionString = "";
+        for(int i=0;i<5;i++){
+            for(int j=0;j<5;j++){
+                try{
+                    String letter = mixed_jamoBoard.getBoard()[i][j];
+                    positionString += Integer.toString(jamo_board.checkTile(letter, i, j));
+                }
+                catch(Exception e){
+                    continue;
+                }
+                
+            }
+        }
+
+        GameStartingData ret = new GameStartingData(boardString, positionString);
+
+        return ret;
+    }
 
     @Transient
     public void loadFromDB(JamoEntity entity){

@@ -77,7 +77,7 @@ cur.execute("SELECT * FROM words")
 rows = cur.fetchall()
 
 with open('./data-h2.sql', 'w', encoding="UTF-8") as f:
-    f.write("INSERT INTO word_dictionary (id, word_dict, unit, is_native, class_type, meaning, category, word, jamo, jamo_len, ja1, mo1, ja2, mo2, ja3)\n")
+    f.write("INSERT INTO word_dictionary (id, baseword, unit, isnative, classtype, meaning, category, word, jamo, len, ja1, mo1, ja2, mo2, ja3)\n")
     f.write("VALUES\n")
     for row in rows:
-        f.write(f"('{row[0]}', '{row[1]}', '{row[2]}', '{row[3]}', '{row[4]}', '{row[5]}', '{row[6]}','{row[7]}', '{row[8]}', '{row[9]}', '{row[10]}', '{row[11]}', '{row[12]}', '{row[13]}', '{row[14]}'),\n")
+        f.write(f"({row[0]}, '{row[1]}', '{row[2]}', '{row[3]}', '{row[4]}', '{row[5]}', '{row[6]}','{row[7]}', '{row[8]}', '{row[9]}', '{row[10]}', '{row[11]}', '{row[12]}', '{row[13]}', '{row[14]}'),\n")

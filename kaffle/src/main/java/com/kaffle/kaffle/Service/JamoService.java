@@ -14,6 +14,7 @@ import com.kaffle.kaffle.db.DictionaryEntity;
 import com.kaffle.kaffle.db.DictionaryRepository;
 import com.kaffle.kaffle.db.JamoEntity;
 import com.kaffle.kaffle.db.JamoRepository;
+import com.kaffle.kaffle.model.Meanings;
 
 
 
@@ -68,6 +69,7 @@ public class JamoService {
                 jamoEntity.setCol2(col2.getJamo());
                 jamoEntity.setCol3(col3.getJamo());
                 jamoEntity.fill_datas();
+                loadMeanings();
 
                 jamoRepository.save(jamoEntity);
 
@@ -79,6 +81,28 @@ public class JamoService {
         }
 
         System.out.println("----------Generated JAMO");
+    }
+
+    public void loadMeanings(){
+
+        List<List<String[]>> meanings = new ArrayList<>();
+        String[] words = {jamoEntity.getRow1(), jamoEntity.getRow2(), jamoEntity.getRow3(), 
+            jamoEntity.getCol1(), jamoEntity.getCol2(), jamoEntity.getCol3()};
+        
+        System.out.println(words);
+        for(int i=0;i<words.length;i++){
+            List<DictionaryEntity> wordDatas = dictionaryRepository.findAllByJamo(words[i]);
+            System.out.println(wordDatas);
+            List<String[]> word_meaning = new ArrayList<>();
+            for(int j=0;j<wordDatas.size();j++){
+                String[] meaning = {wordDatas.get(j).getClasstype(), wordDatas.get(j).getMeaning()};
+                System.out.println(meaning);
+                word_meaning.add(meaning);
+            }
+            meanings.add(word_meaning);
+        }
+
+        jamoEntity.setMeanings(meanings);
     }
 
     /**
@@ -93,6 +117,7 @@ public class JamoService {
             JamoEntity tempEntity = jamoRepository.findById(jamoRepoSize).get();
 
             jamoEntity.loadFromDB(tempEntity);
+            loadMeanings();
         }
         else{
             dayChange();

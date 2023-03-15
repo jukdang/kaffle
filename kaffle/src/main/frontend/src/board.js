@@ -51,9 +51,36 @@ function Board() {
         (async () => {
             await axios.get('/api/todayMixedJamo')
             .then(response => {
-                const res = response.data;
-                console.log('response: ', res)
-                setWordList(res.split(''));
+                console.log('response: ', response)
+
+                let cnt = 0;
+                let boardString = response.data.boardString;
+                let positionString = response.data.positionString;
+                
+                setWordList(boardString.split(''));
+
+                let positions = positionString.split('');
+                let tiles = document.getElementsByClassName("tile");
+                for(let i=0;i<tiles.length;i++){
+                    // (1: correct, 0: in-line, -1: not-in-line)
+                    if(positions[i]>0){ 
+                        tiles[i].classList.add('correct');
+                        cnt += 1;
+                    }
+                    else if(positions[i]===0){
+                        tiles[i].classList.add('in-line');
+                    }
+                    else{
+                        continue;
+                    }
+                }
+
+                console.log('MSG: finish to load tiles');
+
+                return cnt;
+            })
+            .then(cnt => {
+                setCorrectCnt(cnt)
             })
             .catch(error => {
                 console.log(error)
@@ -81,7 +108,7 @@ function Board() {
                 
             }
         }
-        console.log("finish to set grid-area");
+        console.log("MSG: finish to set grid-area");
         
         let startBtn = document.getElementsByClassName('start-btn')[0];
         startBtn.classList.remove('out');
@@ -107,63 +134,50 @@ function Board() {
         
         
         setTimeout(() => {
-            let elementList = document.getElementsByClassName('tile');
-            for(let element of elementList){
-                checkTile(element);
-            }
-            console.log('finish to check tile correct');
-
             alertbar.classList.add('out');
             let board = document.getElementsByClassName('board')[0];
             board.style.opacity = '100%';
         }, 500)
     }
 
-    function checkTile(tile){
-        let tile_value = tile.textContent.toLowerCase();
-        let data_pos = JSON.parse(tile.getAttribute("data-pos"));
-        let x = data_pos.x;
-        let y = data_pos.y;
-        
-        // console.log(data_pos[0], data_pos[1])
-        // console.log(answerList[data_pos[0]][data_pos[1]])
-        // console.log(tile_value)
-        // console.log(rowList[x])
-        // console.log(columnList[y])
-        // console.log(rowList[x].includes(tile_value), columnList[y].includes(tile_value))
+    function checkTile(tile1, tile2){
+        let tiles = [tile1, tile2];
 
-        let request_data = {row:x, col:y, tile:tile_value}
-        console.log(request_data);
-        (async () => {
-            await axios.post('/api/positionCheck', request_data)
-            .then(response => {
-                const res = response.data;
-                console.log('response: ', res)
-                tile.classList.remove('in-line');
-                if(res > 0){
-                    tile.classList.add('correct');
-                    setCorrectCnt(correctCnt => correctCnt+1);
-                    
-                }
-                else if(res < 0){
-                    tile.classList.add('in-line');
-                }
-            })
-            .catch(error => {
-                console.log(error)
-                tile.classList.remove('in-line');
-                if(tile_value === answerList[x][y]){
-                    // console.log('correct');
-                    tile.classList.add('correct');
-                    setCorrectCnt(correctCnt => correctCnt+1);
-                    
-                }
-                else if(rowList[x].includes(tile_value) || columnList[y].includes(tile_value)){
-                    tile.classList.add('in-line');
-                }
-            })
-        })();
-        
+        for(let tile in tiles){
+            let tile_value = tile.textContent.toLowerCase();
+            let data_pos = JSON.parse(tile.getAttribute("data-pos"));
+            let x = data_pos.x;
+            let y = data_pos.y;
+            
+
+            let request_data = {row:x, col:y, tile:tile_value}
+            console.log(request_data);
+            const cnt = (async () => {
+                let cnt = 0;
+                await axios.post('/api/positionCheck', request_data)
+                .then(response => {
+                    const res = response.data;
+                    console.log('response: ', res)
+                    tile.classList.remove('in-line');
+                    if(res > 0){
+                        tile.classList.add('correct');
+                        cnt += 1;
+                    }
+                    else if(res < 0){
+                        tile.classList.add('in-line');
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+
+                return cnt;
+            })();
+
+            if(cnt!==0){
+                setCorrectCnt(correctCnt + cnt);
+            }
+        }
         
     }
 
@@ -221,8 +235,7 @@ function Board() {
                 selected.textContent = selected2.textContent;
                 selected2.textContent = swapword;
 
-                checkTile(selected);
-                checkTile(selected2);
+                checkTile(selected, selected2);
                 setTryCnt(tryCnt - 1);
             }
         }

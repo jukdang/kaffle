@@ -1,5 +1,7 @@
 package com.kaffle.kaffle.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kaffle.kaffle.Service.JamoService;
 import com.kaffle.kaffle.db.JamoEntity;
+import com.kaffle.kaffle.model.GameStartingData;
 import com.kaffle.kaffle.model.JamoBoard;
-import com.kaffle.kaffle.model.JamoWord;
 import com.kaffle.kaffle.model.Tile;
 
 @RestController
@@ -21,7 +23,6 @@ public class JamoController {
     @Autowired
     JamoEntity jamoEntity;
 
-    
 
 
     /**
@@ -29,9 +30,9 @@ public class JamoController {
      * @return starting-data includes mixed-board and position-condition
      */
     @GetMapping("/todayMixedJamo")
-    public String todaymixedJamo() {
+    public GameStartingData todaymixedJamo() {
         System.out.println("Request mixed JAMO");
-        return jamoEntity.getMixed_jamoBoard().toResponse();
+        return jamoEntity.toResponse();
     }
 
     /**
@@ -55,16 +56,31 @@ public class JamoController {
         return jamoEntity;
     }
 
+    /**
+     * For test, Not Used
+     * @return jamoEntity to test output
+     */
+    @GetMapping("/explanation")
+    public List<List<String[]>> explanation(){
 
+        return jamoEntity.getMeanings();
+    }
+
+   
     /**
      * called from web when tiles exchanges to check is position condition
      * @param JSON-object(Tile)
      * @return Integer-value(1: correct, 0: in-line, -1: not-in-line)
      */
     @PostMapping("/positionCheck")
-    public Integer positionCheck(@RequestBody Tile tile){
+    public Integer positionCheck(@RequestBody Tile tile) throws Exception{
         System.out.println("Request position Check");
-        return jamoEntity.getJamo_board().checkTile(tile);
+
+        String letter = tile.getTile(); // alphabet
+        int row = tile.getRow(); // 0~4
+        int col = tile.getCol(); // 0~4
+
+        return jamoEntity.getJamo_board().checkTile(letter, row, col);
     }
     
 }

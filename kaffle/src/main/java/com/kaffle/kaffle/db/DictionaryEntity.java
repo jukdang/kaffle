@@ -24,13 +24,13 @@ public class DictionaryEntity {
     private Long id;
     
     @Column
-    private String word_dict;
+    private String baseword;
     @Column
     private String unit;
     @Column
-    private String is_native;
+    private String isnative;
     @Column
-    private String class_type; 
+    private String classtype; 
     @Column
     private String meaning;
     @Column
@@ -40,7 +40,7 @@ public class DictionaryEntity {
     @Column
     private String jamo; 
     @Column
-    private String jamo_len;
+    private String len;
     @Column
     private String ja1;
     @Column
@@ -51,5 +51,7 @@ public class DictionaryEntity {
     private String mo2; 
     @Column
     private String ja3;
+
+
     
 }

@@ -14,7 +14,6 @@ import com.kaffle.kaffle.db.DictionaryEntity;
 import com.kaffle.kaffle.db.DictionaryRepository;
 import com.kaffle.kaffle.db.JamoEntity;
 import com.kaffle.kaffle.db.JamoRepository;
-import com.kaffle.kaffle.model.Meanings;
 
 
 
@@ -89,14 +88,14 @@ public class JamoService {
         String[] words = {jamoEntity.getRow1(), jamoEntity.getRow2(), jamoEntity.getRow3(), 
             jamoEntity.getCol1(), jamoEntity.getCol2(), jamoEntity.getCol3()};
         
-        System.out.println(words);
+        //System.out.println(words);
         for(int i=0;i<words.length;i++){
             List<DictionaryEntity> wordDatas = dictionaryRepository.findAllByJamo(words[i]);
             System.out.println(wordDatas);
             List<String[]> word_meaning = new ArrayList<>();
             for(int j=0;j<wordDatas.size();j++){
                 String[] meaning = {wordDatas.get(j).getClasstype(), wordDatas.get(j).getMeaning()};
-                System.out.println(meaning);
+                //System.out.println(meaning);
                 word_meaning.add(meaning);
             }
             meanings.add(word_meaning);

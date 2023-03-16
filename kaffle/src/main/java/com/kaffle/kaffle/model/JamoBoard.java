@@ -77,29 +77,29 @@ public class JamoBoard {
     }
 
     private Integer checkRow(String letter, Integer rowNum, Integer colNum){
+        if(board[rowNum][colNum].equals(letter)){
+            return 1;
+        }
         for(int i=0;i<5;i++){
             if(board[rowNum][i].equals(letter)){
-                if(i == colNum){
-                    return 1;
-                }
-                return 0;
+                return -1;
             }
         }
 
-        return -1;
+        return 0;
     }
 
     private Integer checkCol(String letter, Integer rowNum, Integer colNum){
+        if(board[rowNum][colNum].equals(letter)){
+            return 1;
+        }
         for(int i=0;i<5;i++){
-            if(board[rowNum][i].equals(letter)){
-                if(i == colNum){
-                    return 1;
-                }
-                return 0;
+            if(board[i][colNum].equals(letter)){
+                return -1;
             }
         }
 
-        return -1;
+        return 0;
     }
     
     public int checkTile(String letter, int row, int col) throws Exception{
@@ -119,7 +119,7 @@ public class JamoBoard {
         }
         else if(col%2==0){
             //check only col
-            ret = checkCol(letter, col, row);
+            ret = checkCol(letter, row, col);
         }
         else{
             throw new Exception();

@@ -102,13 +102,14 @@ public class JamoEntity {
     }
 
     public GameStartingData toResponse(){
-        String boardString = mixed_jamoBoard.toString(); 
+        String boardString = mixed_jamoBoard.toString();
+         
         String positionString = "";
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
                 try{
                     String letter = mixed_jamoBoard.getBoard()[i][j];
-                    positionString += Integer.toString(jamo_board.checkTile(letter, i, j));
+                    positionString += Integer.toString(jamo_board.checkTile(letter, i, j)) + ",";
                 }
                 catch(Exception e){
                     continue;

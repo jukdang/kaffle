@@ -70,7 +70,7 @@ public class JamoController {
     /**
      * called from web when tiles exchanges to check is position condition
      * @param JSON-object(Tile)
-     * @return Integer-value(1: correct, 0: in-line, -1: not-in-line)
+     * @return Integer-value(2: correct, -1,-2: in-line, 0: not-in-line)
      */
     @PostMapping("/positionCheck")
     public Integer positionCheck(@RequestBody Tile tile) throws Exception{

@@ -21,5 +21,6 @@ to do
  - modify word dictionary
 
 
-
- - add meaning request
+- after game request explanation
+- game end effect when game end ( bug )
+- filtering dictionary ( 외래어 )

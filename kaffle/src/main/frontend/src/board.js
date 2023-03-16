@@ -46,7 +46,7 @@ function Board() {
     useEffect(() => {
         setBoardSize(5);
         setCorrectCnt(0);
-        setTryCnt(20);
+        setTryCnt(25);
 
         (async () => {
             await axios.get('/api/todayMixedJamo')
@@ -59,15 +59,15 @@ function Board() {
                 
                 setWordList(boardString.split(''));
 
-                let positions = positionString.split('');
+                let positions = positionString.split(',');
                 let tiles = document.getElementsByClassName("tile");
                 for(let i=0;i<tiles.length;i++){
                     // (1: correct, 0: in-line, -1: not-in-line)
-                    if(positions[i]>0){ 
+                    if(parseInt(positions[i]) > 0){ 
                         tiles[i].classList.add('correct');
                         cnt += 1;
                     }
-                    else if(positions[i]===0){
+                    else if(parseInt(positions[i]) < 0){
                         tiles[i].classList.add('in-line');
                     }
                     else{
@@ -143,8 +143,9 @@ function Board() {
     function checkTile(tile1, tile2){
         let tiles = [tile1, tile2];
 
-        for(let tile in tiles){
-            let tile_value = tile.textContent.toLowerCase();
+        for(let i=0;i<2;i++){
+            let tile = tiles[i];
+            let tile_value = tile.textContent;
             let data_pos = JSON.parse(tile.getAttribute("data-pos"));
             let x = data_pos.x;
             let y = data_pos.y;
@@ -156,7 +157,7 @@ function Board() {
                 let cnt = 0;
                 await axios.post('/api/positionCheck', request_data)
                 .then(response => {
-                    const res = response.data;
+                    const res = parseInt(response.data);
                     console.log('response: ', res)
                     tile.classList.remove('in-line');
                     if(res > 0){
